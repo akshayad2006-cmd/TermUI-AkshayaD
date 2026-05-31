@@ -98,3 +98,7 @@ export type { GradientOptions } from './display/Gradient.js';
 
 export { Markdown } from './display/Markdown.js';
 export type { MarkdownOptions } from './display/Markdown.js';
+export { Badge } from './display/Badge.js';
+export type { BadgeOptions, BadgeVariant } from './display/Badge.js';
+export { Tag } from './display/Tag.js';
+export type { TagOptions, TagVariant } from './display/Tag.js';
