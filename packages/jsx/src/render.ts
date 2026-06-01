@@ -10,7 +10,7 @@ import { App, type KeyEvent } from '@termuijs/core';
 import { Box, Widget } from '@termuijs/widgets';
 import type { VNode, FC } from './vnode.js';
 import { reconcile, unmountAll, reRenderComponent } from './reconciler.js';
-import { setRequestRender, collectInputHandlers } from './hooks.js';
+import { setRequestRender, setInsertBefore, collectInputHandlers } from './hooks.js';
 import { createElement } from './createElement.js';
 import { setCurrentApp } from './runtime.js';
 
@@ -62,6 +62,11 @@ export async function render(
     // Create the App
     const appInstance = new App(rootBox, { fullscreen });
     setCurrentApp(appInstance);
+
+    setInsertBefore((line: string) => appInstance.insertBefore(line));
+    appInstance.events.on('unmount', () => {
+        setInsertBefore(null);
+    });
 
     // Set up the re-render loop
     setRequestRender(() => {

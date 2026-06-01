@@ -21,10 +21,13 @@ TermUI ships a working core today:
 |---|---|---|
 | Wave 1 | Core widgets | Merging now |
 | Waves 2 to 4 | Capabilities, adapters, prompts, registry, templates | All assigned |
-| Wave 5 | Coverage and polish | Opening next |
-| Waves 6 to 10 | Widgets, hooks, subsystems, DX, differentiators | Planned |
+| Wave 5 | Coverage and polish | Open and claimable |
+| Wave 6 | New widgets | Open and claimable |
+| Wave 7 | Hooks and core depth | Open and claimable |
+| Wave 8 | Subsystem depth | Open and claimable |
+| Waves 9 to 10 | DX and differentiators | Planned |
 
-Every issue in waves 1 to 4 is assigned. If you arrived now, start with Wave 5 or watch the planned waves below. Open a new issue for anything you find missing.
+Waves 5 to 8 are open right now with 55 unassigned issues across all skill levels. Browse [open good first issues](https://github.com/Karanjot786/TermUI/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22+no%3Aassignee) or the [project board](https://github.com/users/Karanjot786/projects/2). Comment "I would like to work on this" to claim one. You hold at most 2 open issues at a time.
 
 ## Wave 5: Coverage and polish (beginner, no feature code)
 
@@ -62,6 +65,8 @@ Command palette v2, web serving, plugin architecture, full styling system, demo 
 2. Filter by difficulty label.
 3. Read the issue. Comment "I would like to work on this".
 4. Wait for assignment, then open your PR within 7 days.
+
+You hold at most 2 open issues at a time. Open and merge a PR from one before you claim a third.
 
 Found a gap not on this roadmap? Open a new issue. New ideas are welcome.
 
