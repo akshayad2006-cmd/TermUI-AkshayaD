@@ -1,12 +1,14 @@
+import { EventEmitter } from 'node:events';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useSubprocess } from './useSubprocess.js';
 import { setCurrentApp } from '../runtime.js';
+import { spawn } from 'node:child_process';
 
-const mockSpawn = vi.fn();
+vi.mock('node:child_process', () => ({
+    spawn: vi.fn(),
+}));
 
-(globalThis as any).Bun = {
-    spawn: mockSpawn,
-};
+const mockSpawn = vi.mocked(spawn);
 
 describe('useSubprocess', () => {
     beforeEach(() => {
@@ -18,17 +20,19 @@ describe('useSubprocess', () => {
     });
 
     it('spawns a subprocess with inherited stdio and returns the exit code', async () => {
-        mockSpawn.mockImplementation(() => ({
-            exited: Promise.resolve(7),
-        }));
+        const proc = new EventEmitter();
+
+        mockSpawn.mockReturnValue(proc as any);
 
         const subprocess = useSubprocess();
-        const code = await subprocess.run(['git', 'status']);
+        const promise = subprocess.run(['git', 'status']);
 
-        expect(mockSpawn).toHaveBeenCalledWith(['git', 'status'], {
-            stdin: 'inherit',
-            stdout: 'inherit',
-            stderr: 'inherit',
+        proc.emit('close', 7);
+
+        const code = await promise;
+
+        expect(mockSpawn).toHaveBeenCalledWith('git', ['status'], {
+            stdio: 'inherit',
         });
         expect(code).toBe(7);
     });
@@ -47,21 +51,25 @@ describe('useSubprocess', () => {
 
         setCurrentApp(app);
 
-        mockSpawn.mockImplementation(() => ({
-            exited: Promise.resolve(0),
-        }));
+        const proc = new EventEmitter();
+        mockSpawn.mockReturnValue(proc as any);
 
         const subprocess = useSubprocess();
-        const code = await subprocess.run(['vim', 'file.txt']);
+        const promise = subprocess.run(['vim', 'file.txt']);
 
         expect(app.terminal.exitRawMode).toHaveBeenCalledOnce();
+
+        proc.emit('close', 0);
+
+        const code = await promise;
+
         expect(app.terminal.enterRawMode).toHaveBeenCalledOnce();
         expect(app.screen.invalidate).toHaveBeenCalledOnce();
         expect(app.requestRender).toHaveBeenCalledOnce();
         expect(code).toBe(0);
     });
 
-    it('restores raw mode and re-renders even when spawning throws', async () => {
+    it('restores raw mode and re-renders when the subprocess emits an error', async () => {
         const app = {
             terminal: {
                 exitRawMode: vi.fn(),
@@ -75,15 +83,16 @@ describe('useSubprocess', () => {
 
         setCurrentApp(app);
 
-        mockSpawn.mockImplementation(() => {
-            throw new Error('spawn failed');
-        });
+        const proc = new EventEmitter();
+        mockSpawn.mockReturnValue(proc as any);
 
         const subprocess = useSubprocess();
+        const promise = subprocess.run(['bad-command']);
 
-        await expect(subprocess.run(['bad-command'])).rejects.toThrow('spawn failed');
+        proc.emit('error', new Error('spawn failed'));
 
-        expect(app.terminal.exitRawMode).toHaveBeenCalledOnce();
+        await expect(promise).rejects.toThrow('spawn failed');
+
         expect(app.terminal.enterRawMode).toHaveBeenCalledOnce();
         expect(app.screen.invalidate).toHaveBeenCalledOnce();
         expect(app.requestRender).toHaveBeenCalledOnce();
