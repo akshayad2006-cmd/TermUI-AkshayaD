@@ -61,10 +61,10 @@ export async function render(
 
     // Create the App
     const appInstance = new App(rootBox, { fullscreen });
-setCurrentApp(appInstance);
-appInstance.terminal.onCleanup(() => {
-    setCurrentApp(null);
-});
+    setCurrentApp(appInstance);
+    appInstance.terminal.onCleanup(() => {
+        setCurrentApp(null);
+    });
     setInsertBefore((line: string) => appInstance.insertBefore(line));
     appInstance.events.on('unmount', () => {
         setInsertBefore(null);
