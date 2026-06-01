@@ -12,6 +12,7 @@ import type { VNode, FC } from './vnode.js';
 import { reconcile, unmountAll, reRenderComponent } from './reconciler.js';
 import { setRequestRender, collectInputHandlers } from './hooks.js';
 import { createElement } from './createElement.js';
+import { setCurrentApp } from './runtime.js';
 
 export interface RenderOptions {
     /** App title shown in the title bar */
@@ -60,6 +61,7 @@ export async function render(
 
     // Create the App
     const appInstance = new App(rootBox, { fullscreen });
+    setCurrentApp(appInstance);
 
     // Set up the re-render loop
     setRequestRender(() => {

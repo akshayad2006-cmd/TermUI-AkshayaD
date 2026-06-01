@@ -47,6 +47,9 @@ export { useFocusTrap } from './hooks/useFocusTrap.js';
 export { useKeyboardNavigation } from './hooks/useKeyboardNavigation.js';
 export type { KeyboardNavigationOptions, KeyboardNavigationResult } from './hooks/useKeyboardNavigation.js';
 
+// ── Subprocess ──
+export { useSubprocess } from './hooks/useSubprocess.js';
+export type { UseSubprocessResult } from './hooks/useSubprocess.js';
 // ── Render ──
 export { render, renderApp } from './render.js';
 export type { RenderOptions } from './render.js';
