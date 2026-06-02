@@ -33,6 +33,11 @@ export type { AsyncState, KeyBinding, MotionPreferences } from './hooks.js';
 export { ErrorBoundary } from './error-boundary.js';
 export type { ErrorBoundaryProps } from './error-boundary.js';
 
+// ── Suspense / Lazy ──
+export { Suspense } from './Suspense.js';
+export type { SuspenseProps } from './Suspense.js';
+export { lazy } from './lazy.js';
+
 // ── Context ──
 export { createContext, useContext } from './context.js';
 export type { Context } from './context.js';
@@ -69,4 +74,4 @@ export { setRequestRender, getRequestRender, setInsertBefore, collectInputHandle
 // ── Convenience alias ──
 /** h() — shorthand for createElement */
 export { createElement as h } from './createElement.js';
-export { usePrevious } from './hooks/usePrevious';
+export { usePrevious } from './hooks/usePrevious.js';
