@@ -39,7 +39,7 @@ export function lazy<TProps = any>(
         }
 
         const Component = result as FC<TProps>;
-        return Component(props);
+        return Component(props as TProps & { children?: any });
     };
 
     return LazyComponent;
