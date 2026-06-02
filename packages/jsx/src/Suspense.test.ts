@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'bun:test';
+import { describe, expect, it } from 'vitest';
 import { createElement } from './createElement.js';
 import { reconcile } from './reconciler.js';
 import { setRequestRender } from './hooks.js';
@@ -16,7 +16,7 @@ function textContent(widget: any): string {
 }
 
 describe('Suspense and lazy', () => {
-    test('renders fallback while lazy component is pending, then renders loaded component', async () => {
+    it('renders fallback while lazy component is pending, then renders loaded component', async () => {
         let resolveLoader!: (value: { default: any }) => void;
         let renderRequests = 0;
         let loaderCalls = 0;
@@ -37,7 +37,7 @@ describe('Suspense and lazy', () => {
         }
 
         const element = createElement(
-            Suspense,
+            Suspense as any,
             { fallback: createElement('text', null, 'Loading') },
             createElement(Profile, null),
         );
