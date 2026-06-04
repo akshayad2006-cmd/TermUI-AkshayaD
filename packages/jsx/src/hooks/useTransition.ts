@@ -10,8 +10,11 @@ export function useTransition(): [
         setIsPending(true);
 
         Promise.resolve().then(() => {
-            callback();
-            setIsPending(false);
+            try {
+                callback();
+            } finally {
+                setIsPending(false);
+            }
         });
     };
 
